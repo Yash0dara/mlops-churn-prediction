@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment - IMPORTANT!
+venv/
+env/
+ENV/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data files - Don't upload large CSV files
+data/raw/*.csv
+data/processed/*.parquet
+*.csv
+*.parquet
+
+# Models
+models/*.pkl
+models/*.joblib
+mlruns/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
