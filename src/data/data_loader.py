@@ -41,9 +41,8 @@ class DataLoader:
         if missing_count > 0:
             print(f"  - Found {missing_count} missing TotalCharges values")
             print(f"  - Filling with MonthlyCharges")
-            self.df['TotalCharges'].fillna(
-                self.df['MonthlyCharges'], 
-                inplace=True
+            self.df['TotalCharges'] = self.df['TotalCharges'].fillna(
+            self.df['MonthlyCharges']
             )
         
         # 3. Remove customerID
