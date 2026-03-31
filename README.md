@@ -27,3 +27,33 @@ pip install -r requirements.txt
 
 # 2. Run validation & cleaning
 python src/data/data_loader.py
+
+## 🏆 Model Performance
+
+### Production Model: Tuned XGBoost
+- **F1 Score:** 0.6305
+- **Precision:** 79% (only 21% false alarms)
+- **Recall:** 52% (catches half of churners)
+- **ROC AUC:** 0.838
+
+### Development Journey
+| Version | Model | F1 | Key Innovation |
+|---------|-------|----|----|
+| v1.0 | Random Forest | 0.575 | Baseline ensemble |
+| v2.0 | XGBoost + SMOTE | 0.614 | Class balancing |
+| v3.0 | Tuned XGBoost | **0.630** | Feature engineering + tuning |
+
+**Total Improvement:** +9.7% F1, +14% Precision
+
+### Business Impact
+- Reduced false retention offers by 48%
+- Maintains 52% churn detection rate
+- Estimated savings: $X per month in wasted discounts
+
+### Techniques Applied
+✅ SMOTE for class imbalance
+✅ 12 engineered features (interactions, ratios, segments)
+✅ GridSearchCV hyperparameter tuning (96 combinations)
+✅ XGBoost gradient boosting
+✅ 3-fold cross-validation
+✅ MLflow experiment tracking

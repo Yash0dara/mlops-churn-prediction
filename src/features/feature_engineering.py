@@ -23,65 +23,114 @@ class FeatureEngineer:
         self.feature_names = None
     
     def create_features(self, df):
-        """Engineer new features from raw data"""
-        print("🔧 Creating new features...")
+        """Engineer advanced features"""
+        print("🔧 Creating advanced features...")
         
         df = df.copy()
         
-        # Feature 1: Tenure groups (customer lifecycle)
-        print("  - Creating tenure_group")
+        # Original features
+        print("  - Tenure groups")
         df['tenure_group'] = pd.cut(
             df['tenure'], 
             bins=[0, 12, 24, 48, 72],
             labels=['0-1yr', '1-2yr', '2-4yr', '4yr+']
         )
         
-        # Feature 2: Average monthly charges per tenure month
-        print("  - Creating avg_monthly_charges")
+        print("  - Average monthly charges")
         df['avg_monthly_charges'] = df['TotalCharges'] / (df['tenure'] + 1)
         
-        # Feature 3: Has multiple services (indicator)
-        print("  - Creating has_multiple_services")
+        print("  - Has multiple services")
         df['has_multiple_services'] = (
             (df['PhoneService'] == 'Yes') & 
             (df['InternetService'] != 'No')
         ).astype(int)
         
-        print(f"✅ Created {df.shape[1] - 20} new features")
+        # NEW: Advanced interaction features
+        print("  - Contract × Payment interaction")
+        df['contract_payment'] = df['Contract'].astype(str) + '_' + df['PaymentMethod'].astype(str)
+        
+        print("  - Service bundle score")
+        # Count how many services customer has
+        service_cols = ['PhoneService', 'MultipleLines', 'InternetService', 
+                        'OnlineSecurity', 'OnlineBackup', 'DeviceProtection',
+                        'TechSupport', 'StreamingTV', 'StreamingMovies']
+        df['service_count'] = sum([
+            (df[col] == 'Yes').astype(int) for col in service_cols if col in df.columns
+        ])
+        
+        print("  - Monthly charges per service")
+        df['charges_per_service'] = df['MonthlyCharges'] / (df['service_count'] + 1)
+        
+        print("  - Tenure squared (non-linear relationship)")
+        df['tenure_squared'] = df['tenure'] ** 2
+        
+        print("  - Is new customer (< 6 months)")
+        df['is_new_customer'] = (df['tenure'] < 6).astype(int)
+        
+        print("  - Is long-term customer (> 48 months)")
+        df['is_loyal_customer'] = (df['tenure'] > 48).astype(int)
+        
+        print("  - Monthly charges bin")
+        df['charges_bin'] = pd.cut(
+            df['MonthlyCharges'],
+            bins=[0, 35, 70, 200],
+            labels=['low', 'medium', 'high']
+        )
+        
+        print("  - High value customer (top 25% spend)")
+        df['is_high_value'] = (df['MonthlyCharges'] > df['MonthlyCharges'].quantile(0.75)).astype(int)
+        
+        # Interaction: Contract type + Internet service
+        print("  - Contract × Internet interaction")
+        df['contract_internet'] = df['Contract'].astype(str) + '_' + df['InternetService'].astype(str)
+        
+        print(f"✅ Created {df.shape[1] - 20} new features (total: {df.shape[1]})")
         return df
     
     def build_preprocessor(self):
         """Build sklearn preprocessing pipeline"""
         print("\n🏗️ Building preprocessing pipeline...")
         
-        # Get feature lists from config
         numeric_features = self.config['features']['numeric'].copy()
         categorical_features = self.config['features']['categorical'].copy()
         
-        # Add engineered features
-        numeric_features.extend(['avg_monthly_charges'])
-        categorical_features.extend(['tenure_group', 'has_multiple_services'])
+        # Add engineered numeric features
+        numeric_features.extend([
+            'avg_monthly_charges',
+            'service_count',
+            'charges_per_service',
+            'tenure_squared',
+            'is_new_customer',
+            'is_loyal_customer',
+            'is_high_value'
+        ])
+        
+        # Add engineered categorical features
+        categorical_features.extend([
+            'tenure_group',
+            'has_multiple_services',
+            'contract_payment',
+            'charges_bin',
+            'contract_internet'
+        ])
         
         print(f"  - Numeric features: {len(numeric_features)}")
         print(f"  - Categorical features: {len(categorical_features)}")
         
-        # Numeric transformer: scale to mean=0, std=1
         numeric_transformer = Pipeline(steps=[
             ('scaler', StandardScaler())
         ])
         
-        # Categorical transformer: one-hot encode
         categorical_transformer = Pipeline(steps=[
             ('onehot', OneHotEncoder(drop='first', handle_unknown='ignore'))
         ])
         
-        # Combine transformers
         self.preprocessor = ColumnTransformer(
             transformers=[
                 ('num', numeric_transformer, numeric_features),
                 ('cat', categorical_transformer, categorical_features)
             ],
-            remainder='drop'  # Drop any columns not specified
+            remainder='drop'
         )
         
         print("✅ Pipeline built!")
