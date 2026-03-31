@@ -1,0 +1,45 @@
+# Project Configuration File
+
+# Data paths
+data:
+  raw_path: "data/raw/churn.csv"
+  processed_path: "data/processed/"
+  cleaned_file: "churn_cleaned.parquet"
+
+# Features for modeling
+features:
+  numeric:
+    - tenure
+    - MonthlyCharges
+    - TotalCharges
+  
+  categorical:
+    - gender
+    - SeniorCitizen
+    - Partner
+    - Dependents
+    - PhoneService
+    - MultipleLines
+    - InternetService
+    - OnlineSecurity
+    - OnlineBackup
+    - DeviceProtection
+    - TechSupport
+    - StreamingTV
+    - StreamingMovies
+    - Contract
+    - PaperlessBilling
+    - PaymentMethod
+  
+  target: "Churn"
+
+# Model training parameters
+model:
+  test_size: 0.2
+  random_state: 42
+  cv_folds: 5
+
+# Experiment tracking
+mlflow:
+  experiment_name: "churn-prediction"
+  tracking_uri: "mlruns"
