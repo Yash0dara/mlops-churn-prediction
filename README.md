@@ -57,3 +57,34 @@ python src/data/data_loader.py
 ✅ XGBoost gradient boosting
 ✅ 3-fold cross-validation
 ✅ MLflow experiment tracking
+
+## 🎨 Frontend
+React UI with glassmorphism design at `http://localhost:3000`
+
+```bash
+cd frontend
+npm install
+npm start
+
+## 🐳 Docker
+docker build -t churn-prediction-api .
+docker run -p 8000:8000 churn-prediction-api
+
+##🛠️ Technologies
+Backend: Python, FastAPI, scikit-learn, XGBoost, MLflow
+Frontend: React, Material-UI, Recharts
+DevOps: Docker, Git
+
+##👤 Author
+GitHub: @Yash0dara
+
+## 🚀 How to Run
+
+### Run Locally
+
+**Backend (Terminal 1):**
+```bash
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn src.api.main:app --reload --port 8000

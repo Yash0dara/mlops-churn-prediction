@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 import logging
 from datetime import datetime
-
+from fastapi.middleware.cors import CORSMiddleware
 from .models import (
     CustomerData, PredictionResponse,
     BatchPredictionRequest, BatchPredictionResponse,
@@ -25,7 +25,14 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc"
 )
-
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Load model at startup
 @app.on_event("startup")
 async def startup_event():
