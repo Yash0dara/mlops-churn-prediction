@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+
+# Data files
+data/raw/*.csv
+data/processed/*.parquet
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+
+# Git
+.git/
+.gitignore
+
+# IDEs
+.vscode/
+.idea/
+
+# Tests
+tests/
