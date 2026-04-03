@@ -5,9 +5,6 @@ End-to-end MLOps pipeline for predicting telecom customer churn.
 ## 🎯 Project Goal
 Predict which customers will leave so the company can take retention actions.
 
-## 📊 Project Goal
-Predict which customers will leave so the company can take retention actions.
-
 ## 🏗️ Pipeline Steps
 1. **Data Validation** - Automatic quality checks before processing ✅
 2. **Data Cleaning** - Fix types, handle missing values, standardize format ✅
