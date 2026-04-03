@@ -5,28 +5,23 @@ End-to-end MLOps pipeline for predicting telecom customer churn.
 ## 🎯 Project Goal
 Predict which customers will leave so the company can take retention actions.
 
+## 📊 Project Goal
+Predict which customers will leave so the company can take retention actions.
+
 ## 🏗️ Pipeline Steps
-1. **Data Validation** - Automatic quality checks before processing
-2. **Data Cleaning** - Fix types, handle missing values, standardize format
-3. **Feature Engineering** - Create ML-ready features (upcoming)
-4. **Model Training** - Experiment tracking with MLflow (upcoming)
-5. **Deployment** - REST API with FastAPI + Docker (upcoming)
-6. **Monitoring** - Detect data drift & performance drops (upcoming)
+1. **Data Validation** - Automatic quality checks before processing ✅
+2. **Data Cleaning** - Fix types, handle missing values, standardize format ✅
+3. **Feature Engineering** - 12 engineered features for better predictions ✅
+4. **Model Training** - Experiment tracking with MLflow ✅
+5. **API Backend** - REST API with FastAPI ✅
+6. **Frontend** - React UI with glassmorphism design ✅
+7. **Docker** - Containerized deployment ✅
 
 ## 📊 Dataset
 - Source: [Telco Customer Churn (Kaggle)](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
 - 7,043 customers, 21 features
 - Target: Churn (Yes/No)
 
-## 🚀 Quick Start
-```bash
-# 1. Setup
-python -m venv venv
-venv\Scripts\activate  # Windows
-pip install -r requirements.txt
-
-# 2. Run validation & cleaning
-python src/data/data_loader.py
 
 ## 🏆 Model Performance
 
@@ -79,12 +74,32 @@ DevOps: Docker, Git
 GitHub: @Yash0dara
 
 ## 🚀 How to Run
-
-### Run Locally
+### Option 1: Run Locally
 
 **Backend (Terminal 1):**
 ```bash
 python -m venv venv
-venv\Scripts\activate
+venv\Scripts\activate          # Windows
+source venv/bin/activate       # Mac/Linux
+
 pip install -r requirements.txt
 uvicorn src.api.main:app --reload --port 8000
+
+**Frontend (Terminal 2):**
+cd frontend
+npm install
+npm start
+# Opens at http://localhost:3000
+
+### Option 2: Run with Docker
+docker build -t churn-prediction-api .
+docker run -p 8000:8000 churn-prediction-api
+# API at: http://localhost:8000/docs
+
+
+### Option 3: Docker Compose (Full Stack)
+docker-compose up
+# Backend: http://localhost:8000/docs
+# Frontend: http://localhost:3000
+
+
